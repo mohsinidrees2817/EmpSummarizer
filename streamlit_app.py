@@ -18,7 +18,13 @@ if uploaded_file is not None:
     try:
         # Load workbook
         wb = load_workbook(filename=uploaded_file)
-        employee_sheets = [s for s in wb.sheetnames if "summary" not in s.lower()]
+
+        # Exclude hidden sheets and any summary-like sheets
+        employee_sheets = [
+            s
+            for s in wb.sheetnames
+            if "summary" not in s.lower() and wb[s].sheet_state == "visible"
+        ]
 
         # Define columns
         columns = [
